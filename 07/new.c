@@ -12,6 +12,8 @@ int main(){
         printf("usage: %s <file> \n",argv[0])
         return -1;
     }
+    char buffer[10];
+    char buffer2[10];
     int fd=open(argv[1],O_RDONLY);
     int fd2 = open(argv[1], O_RDONLY);
     printf("fd = %d\n", fd);
@@ -19,4 +21,5 @@ int main(){
     while(1){
         sleep(100);
     }
+    return 0;
 }
