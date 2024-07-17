@@ -50,6 +50,7 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
+	//打开句柄
 	fd = open(argv[1], O_RDWR);
 	if (fd < 0)
 	{
@@ -57,7 +58,9 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
+	//调用内核函数
 	err = ioctl(fd, EVIOCGID, &id);
+	//有接收到句柄信息
 	if (err == 0)
 	{
 		printf("bustype = 0x%x\n", id.bustype );
@@ -66,6 +69,7 @@ int main(int argc, char **argv)
 		printf("version = 0x%x\n", id.version );
 	}
 
+	//用于判断支持设备类型，返回值是
 	len = ioctl(fd, EVIOCGBIT(0, sizeof(evbit)), &evbit);
 	if (len > 0 && len <= sizeof(evbit))
 	{
