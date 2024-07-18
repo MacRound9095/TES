@@ -9,22 +9,18 @@
 #include <unistd.h>
 #include <poll.h>
 
-
-/* ./01_get_input_info /dev/input/event0 */
+/* ./01_get_input_info /dev/input/event0  */
 int main(int argc, char **argv)
 {
 	int fd;
 	int err;
 	int len;
-	int ret;
 	int i;
 	unsigned char byte;
 	int bit;
 	struct input_id id;
 	unsigned int evbit[2];
 	struct input_event event;
-	struct pollfd fds[1];
-	nfds_t nfds = 1;
 	
 	char *ev_names[] = {
 		"EV_SYN ",
@@ -52,13 +48,20 @@ int main(int argc, char **argv)
 		"EV_PWR ",
 		};
 	
-	if (argc != 2)
+	if (argc < 2)
 	{
-		printf("Usage: %s <dev>\n", argv[0]);
+		printf("Usage: %s <dev> [noblock]\n", argv[0]);
 		return -1;
 	}
 
-	fd = open(argv[1], O_RDWR | O_NONBLOCK);
+	if (argc == 3 && !strcmp(argv[2], "noblock"))
+	{
+		fd = open(argv[1], O_RDWR | O_NONBLOCK);
+	}
+	else
+	{
+		fd = open(argv[1], O_RDWR);
+	}
 	if (fd < 0)
 	{
 		printf("open %s err\n", argv[1]);
@@ -93,28 +96,14 @@ int main(int argc, char **argv)
 
 	while (1)
 	{
-		fds[0].fd = fd;
-		fds[0].events  = POLLIN;
-		fds[0].revents = 0;
-		ret = poll(fds, nfds, 5000);
-		if (ret > 0)//ret大于0.表示有数据了，但不确定是否可以读，需要看revent
+		len = read(fd, &event, sizeof(event));
+		if (len == sizeof(event))
 		{
-			//sizeof(event),event本身是一个结构体，是一个完整时间，sizeof(event)说明每次read，读一个完整结构体的大小内容到buf里
-			if (fds[0].revents == POLLIN)
-			{
-				while (read(fd, &event, sizeof(event)) == sizeof(event))
-				{
-					printf("get event: type = 0x%x, code = 0x%x, value = 0x%x\n", event.type, event.code, event.value);
-				}
-			}
-		}
-		else if (ret == 0)//超时
-		{
-			printf("time out\n");
+			printf("get event: type = 0x%x, code = 0x%x, value = 0x%x\n", event.type, event.code, event.value);
 		}
 		else
 		{
-			printf("poll err\n");
+			printf("read err %d\n", len);
 		}
 	}
 

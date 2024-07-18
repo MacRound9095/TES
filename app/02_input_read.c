@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-
+#include <poll.h>
 
 /* ./01_get_input_info /dev/input/event0 noblock */
 int main(int argc, char **argv)
@@ -21,6 +21,9 @@ int main(int argc, char **argv)
 	struct input_id id;
 	unsigned int evbit[2];
 	struct input_event event;
+	struct pollfd fds[1];
+	 nfds_t nfds=1;
+
 	
 	char *ev_names[] = {
 		"EV_SYN ",
@@ -48,20 +51,14 @@ int main(int argc, char **argv)
 		"EV_PWR ",
 		};
 	
-	if (argc < 2)
+	if (argc != 2)
 	{
-		printf("Usage: %s <dev> [noblock]\n", argv[0]);
+		printf("Usage: %s <dev> \n", argv[0]);
 		return -1;
 	}
 
-	if (argc == 3 && !strcmp(argv[2], "noblock"))
-	{
-		fd = open(argv[1], O_RDWR | O_NONBLOCK);
-	}
-	else
-	{
-		fd = open(argv[1], O_RDWR);
-	}
+	fd = open(argv[1], O_RDWR | O_NONBLOCK);
+
 	if (fd < 0)
 	{
 		printf("open %s err\n", argv[1]);
@@ -96,6 +93,17 @@ int main(int argc, char **argv)
 
 	while (1)
 	{
+		fds[0].fd=fd;
+		fds[0].events=POLLIN;
+		fds[0].revents=0;
+		int ret=poll(fds,nfds,5000);
+		if(ret>0)
+		{
+			if(fds[0].revents==POLLIN)
+			while(read(fd, &event, sizeof(event)) == sizeof(event))
+
+		}
+		
 		len = read(fd, &event, sizeof(event));
 		if (len == sizeof(event))
 		{
