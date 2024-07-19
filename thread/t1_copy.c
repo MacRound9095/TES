@@ -10,7 +10,7 @@
 
 static char global_buf[999];
 static sem_t isem;
-static pthread_mutex_t g_tmutex = PHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t g_tmutex = PTHREAD_MUTEX_INITIALIZER;
 static void *my_func (void *data){
     while(1){
         sem_wait(&isem);
