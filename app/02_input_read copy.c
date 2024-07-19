@@ -96,6 +96,7 @@ int main(int argc, char **argv)
 
 	while (1)
 	{
+		
 		len = read(fd, &event, sizeof(event));
 		if (len == sizeof(event))
 		{
