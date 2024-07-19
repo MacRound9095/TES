@@ -25,7 +25,7 @@ int main(int apsrgc,char **argv){
     }
     // 2 主线程读取标准输入，发给接收线程
     while(1){
-           fgets(global_buf, 999, FILE *stream);
+           fgets(global_buf, 999, stdin);
            sem_post(&isem);
     }
     return 0;
