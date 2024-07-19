@@ -13,7 +13,7 @@ int main(int argc,char **argv){
     pthread_t tid;
     int ret;
     // 1 创建接收线程
-    ret=pthread_create(tid, NULL,my_func,NULL);
+    ret=pthread_create(&tid, NULL,my_func,NULL);
     if(ret){
         printf("create err");
         return 0;
