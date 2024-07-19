@@ -36,7 +36,7 @@ int main(int apsrgc,char **argv){
     while(1){
             fgets(temp_buf, 999, stdin);
             pthread_mutex_lock(&g_tmutex);
-            memcpy(global_buf, temp_buf, size_t n);
+            memcpy(global_buf, temp_buf, 999);
             pthread_mutex_unlock(&g_tmutex);
            sem_post(&isem);
     }
