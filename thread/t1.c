@@ -1,7 +1,7 @@
 
 #include <pthread.h>
 #include <stdio.h>
-
+#include <unistd.h>
 
 static void *my_func (void *data){
     while(1){
