@@ -9,7 +9,7 @@ static void *my_func (void *data){
     }
 }
 
-int main(int argc,char **argv){
+int main(int apsrgc,char **argv){
     pthread_t tid;
     int ret;
     // 1 创建接收线程
@@ -19,6 +19,10 @@ int main(int argc,char **argv){
         return 0;
     }
     // 2 主线程读取标准输入，发给接收线程
+    while(1){
+        sleep(10);
+    }
+    return 0;
 
     
 }
