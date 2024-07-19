@@ -13,7 +13,7 @@ static void *my_func (void *data){
     }
 }
 
-int main(int apsrgc,char **argv){
+int main(int argc,char **argv){
     pthread_t tid;
     int ret;
     sem_init(&isem, 0, 0);
