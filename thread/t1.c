@@ -9,7 +9,7 @@ static sem_t isem;
 static void *my_func (void *data){
     while(1){
         sem_wait(&isem);
-        printf("the message are %s \n",global_buf)
+        printf("the message are %s \n",global_buf);
     }
 }
 
